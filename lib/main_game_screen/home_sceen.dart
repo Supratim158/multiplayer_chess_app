@@ -1,5 +1,13 @@
 
+import 'package:chess_app/main.dart';
+import 'package:chess_app/main_game_screen/about_screen.dart';
+import 'package:chess_app/main_game_screen/game_time_setup_screen.dart';
+import 'package:chess_app/main_game_screen/settings_screen.dart';
+import 'package:chess_app/proviers/game_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../helper/helper_methods.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = context.read<GameProvider>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff79DBED),
@@ -24,10 +33,36 @@ class _HomeScreenState extends State<HomeScreen> {
         shrinkWrap: true,
         crossAxisCount: 2,
         children: [
-          buildGameType(label: "Vs Computer",icon: Icons.computer_sharp, onTap: (){}),
-          buildGameType(label: "Vs Friend",icon: Icons.group, onTap: (){}),
-          buildGameType(label: "Settings",icon: Icons.settings, onTap: (){}),
-          buildGameType(label: "Profile",icon: Icons.person, onTap: (){}),
+          buildGameType(
+              label: "Vs Computer",
+              icon: Icons.computer_sharp,
+              onTap: (){
+                gameProvider.setVsComputer(value: true);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>GameTimeSetupScreen()));
+              }
+          ),
+          buildGameType(
+              label: "Vs Friend",
+              icon: Icons.group,
+              onTap: (){
+                gameProvider.setVsComputer(value: false);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>GameTimeSetupScreen()));
+              }
+          ),
+          buildGameType(
+              label: "Settings",
+              icon: Icons.settings,
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsScreen()));
+              }
+          ),
+          buildGameType(
+              label: "Profile",
+              icon: Icons.person,
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen()));
+              }
+          ),
         ],
 
       ),
@@ -35,18 +70,4 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget buildGameType({required String label, String? gameTime, IconData? icon, required Function() onTap}){
-  return InkWell(
-    onTap: onTap,
-    child: Card(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon != null ? Icon(icon): Text(gameTime!),
-          SizedBox(height: 10,),
-          Text(label, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-        ],
-      ),
-    ),
-  );
-}
+

@@ -1,10 +1,16 @@
 
+import 'package:chess_app/proviers/game_providers.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'main_game_screen/home_sceen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      MultiProvider(
+          providers: [ChangeNotifierProvider(create: (_) => GameProvider()),],
+          child: const MyApp()
+      ),
+      );
 }
 
 class MyApp extends StatelessWidget {
